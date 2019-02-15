@@ -8,6 +8,7 @@ class SchedulingPolicies:
 	1. best_fit
 	2. worst_fit
 	3. first_fit
+	4. almost_worst_fit
 	'''
 	def best_fit(self, task, partition_dict):
 		#calculate the partition that the task best fits
@@ -58,6 +59,40 @@ class SchedulingPolicies:
 			return p_id
 		#print 'Inside scheduling for FF: '+str(partition_dict[p_id]._af_remain)
 		return p_id
+
+
+	#almost_worst_fit algorithm
+	def almost_worst_fit(self, task, partition_dict):
+		#print 'Task in: '+str(task._utilization)
+		p_id_worst = -1
+		p_id_second = -1
+		size_largest = -1
+		size_second_largest = -1
+		for _, p in partition_dict.items():
+			#print str(p._af_remain)+', '
+			if p._af_remain > size_largest:
+				p_id_second = p_id_worst
+				size_second_largest = size_largest
+				p_id_worst = p._id
+				size_largest = p._af_remain
+
+				#print 'size largest changed: '+str(size_largest)
+			elif p._af_remain>size_second_largest:
+				p_id_second = p._id
+				size_second_largest = p._af_remain
+				#print 'size second largest changed: '+str(size_second_largest)
+		if size_second_largest<task._utilization:
+			if size_largest<task._utilization:
+				#print 'No luck'
+				return -1
+			else:
+				#print 'Final choice(worst): '+str(p_id_worst)+', '+str(partition_dict[p_id_worst]._af_remain)
+				return p_id_worst
+		else:
+			#print 'Final choice(second worst): '+str(p_id_second)+', '+str(partition_dict[p_id_second]._af_remain)
+			return p_id_second
+
+
 	def DABF(self, task, partition_dict):
 		timeNow = task._arrival#could be different if the simulation of the global queue is added
 		if task._leaving < 0:
