@@ -14,7 +14,7 @@ def simulate(total_density, total_af, wFile):
 	schedulers.append(Scheduler('worst_fit'))
 	schedulers.append(Scheduler('first_fit'))
 	schedulers.append(Scheduler('almost_worst_fit'))
-	schedulers.append(Scheduler('almost_best_fit'))
+	#schedulers.append(Scheduler('almost_best_fit'))
 	num_ratio = [0 for k in range(len(schedulers))]
 	util_ratio= [0 for k in range(len(schedulers))]
 	val_ratio= [0 for k in range(len(schedulers))]
@@ -41,7 +41,7 @@ def simulate(total_density, total_af, wFile):
 			val_ratio[policy] += model.get_val_ratio()
 	print 'Schedulability and raio when utilization ratio = '+str(total_density/float(total_af))+':'
 
-	x = total_af
+	x = total_density/float(total_af)
 	for policy in range(len(schedulers)):
 		schedulability[policy] /= (float)(repeat_times)
 		num_ratio[policy] /= (float)(repeat_times)
@@ -50,15 +50,15 @@ def simulate(total_density, total_af, wFile):
 		print 'For policy '+str(policy)+', schedulability is: '+str(schedulability[policy])+', and ratio is: '+str(num_ratio[policy])+', '+str(val_ratio[policy])+', '+str(util_ratio[policy])
 		wFile.write('('+str(x)+','+str(schedulability[policy])+')'+';')
 		wFile.write('('+str(x)+','+str(num_ratio[policy])+')'+';')
-		wFile.write('('+str(x)+','+str(val_ratio[policy])+')'+';')
-		wFile.write('('+str(x)+','+str(util_ratio[policy])+')'+'\n')
+		#wFile.write('('+str(x)+','+str(val_ratio[policy])+')'+';')
+		#wFile.write('('+str(x)+','+str(util_ratio[policy])+')'+'\n')
 
 
 
 if __name__ == "__main__":
 	total_af = 20
-	wFile = open('RPM_utilization_ratio.txt','w')
-	for utilization_ratio in range(1,10,1):
+	wFile = open('VPS_Completion_ratio.txt','w')
+	for utilization_ratio in range(10,30,1):
 		utilization_ratio = utilization_ratio/10.0
 	#for total_af in range(10,110,10):
 		#utilization_ratio = 0.9
