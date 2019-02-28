@@ -92,6 +92,32 @@ class SchedulingPolicies:
 			#print 'Final choice(second worst): '+str(p_id_second)+', '+str(partition_dict[p_id_second]._af_remain)
 			return p_id_second
 
+	def almost_best_fit(self, task, partition_dict):
+		p_id = -1
+		closest_gap = -1
+		p_id_second = -1
+		second_closest_gap = -1
+		sum_af = 0
+		for _, p in partition_dict.items():
+			gap_now = p._af_remain - task._utilization
+			sum_af += p._af_remain
+			if gap_now<0:
+				continue
+			if closest_gap<0 or gap_now<closest_gap:
+				p_id_second = p_id
+				second_closest_gap = closest_gap
+				p_id = p._id
+				closest_gap = gap_now
+			elif gap_now<second_closest_gap:
+				p_id_second = p._id
+				second_closest_gap = p._af_remain
+		#print p_id	
+		#print 'Sum af now: '+str(sum_af)
+		if p_id_second==-1:
+			return p_id
+		else:
+			return p_id_second
+
 
 	def DABF(self, task, partition_dict):
 		timeNow = task._arrival#could be different if the simulation of the global queue is added

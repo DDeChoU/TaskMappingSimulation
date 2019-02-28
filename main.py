@@ -14,6 +14,7 @@ def simulate(total_density, total_af, wFile):
 	schedulers.append(Scheduler('worst_fit'))
 	schedulers.append(Scheduler('first_fit'))
 	schedulers.append(Scheduler('almost_worst_fit'))
+	schedulers.append(Scheduler('almost_best_fit'))
 	num_ratio = [0 for k in range(len(schedulers))]
 	util_ratio= [0 for k in range(len(schedulers))]
 	val_ratio= [0 for k in range(len(schedulers))]
@@ -56,7 +57,7 @@ def simulate(total_density, total_af, wFile):
 
 if __name__ == "__main__":
 	total_af = 20
-	wFile = open('RPM_epsilon_change_ratio = 0.2.txt','w')
+	wFile = open('RPM_utilization_ratio.txt','w')
 	for utilization_ratio in range(1,10,1):
 		utilization_ratio = utilization_ratio/10.0
 	#for total_af in range(10,110,10):
